@@ -80,7 +80,7 @@ function submitUserForm() {
         'username': username_raw,
         'passwordHash': passwordHash,
         'salt': salt,
-}
+    }
 
     $.ajax({
         type: "POST",

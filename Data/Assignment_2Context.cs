@@ -15,5 +15,7 @@ namespace Assignment_2.Data
         }
 
         public DbSet<Assignment_2.Models.User> User { get; set; }
+        public DbSet<Assignment_2.Models.Group> Group { get; set; }
+        public DbSet<Assignment_2.Models.TimeLog> TimeLog { get; set; }
     }
 }
