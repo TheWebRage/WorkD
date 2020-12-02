@@ -17,9 +17,6 @@ function generatePiChart(data) {
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
         .style('fill', 'white');
 
-    // Create dummy data
-    //let data = { a: 9, b: 20, c: 30, d: 8, e: 12 }
-
     // set the color scale
     let color = d3.scaleOrdinal()
         .domain(data)
