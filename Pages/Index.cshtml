@@ -1,0 +1,30 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="whiteBox">
+    <div>
+        <h1 class="display-4 text-center">Welcome to Word Warrior</h1>
+        <p class="text-center">To get started Login and click Play</p>
+    </div>
+
+    <div>
+        <a id="loginButton1" class="btn btn-danger float-right mainButton" href="/users/create">Register</a>
+        <a id="loginButton2" class="btn btn-warning float-right mainButton" href="/users/login">Login</a>
+        <a id="loginButton3" class="btn btn-danger float-right mainButton" href="/users/logout">Logout</a>
+        <a id="playGame" class="btn btn-success float-right mainButton" href="\game">Play</a>
+    </div>
+
+    <div>
+        <h2>How to Play</h2>
+        <ul>
+            <li>Type the words as they appear on your screen</li>
+            <li>If you mess up you have to start the word over</li>
+        </ul>
+    </div>
+</div>
+
+<script src="~/js/user.js" asp-append-version="true"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>

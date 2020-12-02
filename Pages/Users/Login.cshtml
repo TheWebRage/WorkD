@@ -1,0 +1,48 @@
+﻿@page
+@model Assignment_2.Pages.Users.LoginModel
+@Html.AntiForgeryToken()
+
+@section Styles {
+    <link href="~/css/user.css" rel="stylesheet" />
+}
+
+@{
+    ViewData["Title"] = "Login";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9/sha256.js"></script>
+
+<div class="whiteBox">
+
+    <h1>Login</h1>
+
+    <hr />
+    <div class="errorSpot">Error</div>
+    <div class="row">
+        <div class="col-md-4">
+            <form id="user_form" method="post">
+                <div class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Username</label>
+                    <input id="username" class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Password</label>
+                    <input id="password_raw" class="form-control" type="password" />
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="button" value="Login" class="btn btn-primary" onClick="login()" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a class="btn btn-success" href="../../">Back</a>
+    </div>
+    
+</div>
+
+
+<script src="~/js/user.js" asp-append-version="true"></script>

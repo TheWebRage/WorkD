@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/cs3750-typing-gamedbserver/databases/CS3750-Typing-Game_db",
+      "type": "mssql.azure",
+      "connectionId": "Admin",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

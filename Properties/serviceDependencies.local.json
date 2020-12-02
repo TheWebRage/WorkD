@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/cs3750-typing-gamedbserver/databases/CS3750-Typing-Game_db",
+      "type": "mssql.azure",
+      "connectionId": "Admin",
+      "secretStore": "LocalSecretsFile"
+    },
+    "mssql2": {
+      "type": "mssql.local",
+      "connectionId": "Assignment_2Context"
+    }
+  }
+}

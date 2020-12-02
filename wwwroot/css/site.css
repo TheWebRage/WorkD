@@ -1,0 +1,165 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.whiteBox {
+    background-color: white;
+    border-radius: 15px;
+    border: black 5px solid;
+    padding: 30px;
+}
+
+.mainButton {
+    margin: 15px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+@keyframes wordAnimation{
+    from{
+        color: green;
+        top: 0%;
+    }
+    to{
+        color: red;
+        top: calc(100% - 2em);
+    }
+}
+
+.game-board {
+    position: absolute;
+    width: 42.5%;
+    height: 80%;
+    margin-top: 10px;
+    background-color: whitesmoke;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+    border-width: 5px;
+}
+
+#local-board{
+    left: 5%;
+}
+
+#remote-board{
+    right: 5%;
+}
+
+.form-group {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.results {
+    display: grid;
+    margin: auto;
+    width: 500px;
+    height: 600px;
+    background-color: whitesmoke;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+    border-width: 5px;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.results-title{
+    font-size: 5em;
+}
+
+.result-button{
+    width: 50%;
+    height: 35px;
+    margin: auto;
+    background-color: lightblue;
+}
+
+.word {
+    font-size: 2em;
+    display: block;
+    color: red;
+    position: absolute;
+    animation-name: wordAnimation;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    top: calc(100% - 2em);
+    background-color: whitesmoke;
+    padding: 5px;
+}
+
+.username {
+    font-size: 3em;
+    position: fixed;
+    color: whitesmoke;
+    bottom: 6%;
+    text-shadow:  0px -3px 5px #000000,  0px 3px 5px #000000,
+                  3px  0px 5px #000000, -3px 0px 5px #000000;
+}
