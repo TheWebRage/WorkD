@@ -5,9 +5,34 @@ let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
 ////////    Function to generate the pi chart
 generatePiChart(data);
 
+let groups = ['group1', 'group2', 'group3'];
+
+document.onload = function () {
+    let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
+    $.ajax({
+        type: 'POST',
+        url: 'group?handler=Groups',
+        headers: {
+            'XSRF-TOKEN': xsrf,
+        },
+        dataType: 'json',
+        success: function (response) {
+            groups = response;
+        },
+        error: function (response) {
+            alert(response);
+        }
+    });
+
+    updateComboBox(groups);
+};
+
+
+
 function updateComboBox(data) {
     let comboBox = d3.select('#combo')
-        .append('select');
+        .append('select')
+        .attr('id', 'combobox');
 
     for (let g of data) {
         comboBox.append('option')
@@ -17,10 +42,6 @@ function updateComboBox(data) {
 
     comboBox.on('change', changeGroup);
 }
-
-let groups = ['group1', 'group2', 'group3'];
-
-updateComboBox(groups);
 
 function updateTable(data) {
     let table = d3.select('#table')
@@ -78,13 +99,16 @@ function changeGroup() {
         headers: {
             'XSRF-TOKEN': xsrf,
         },
-        data: d3.select(''),
+        data: d3.select('#combobox').node().value,
         dataType: 'json',
         success: function (response) {
-            console.log(response);
+            for (let o of response) {
+                console.log(o.key + ':');
+                console.log(o.value + ' ');
+            }
         },
         error: function (response) {
             alert(response);
         }
-    })
+    });
 }
