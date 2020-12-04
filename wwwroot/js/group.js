@@ -11,20 +11,20 @@ document.onload = function () {
     let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
     $.ajax({
         type: 'POST',
-        url: 'group?handler=Groups',
+        url: 'group/OnPostGroups',
         headers: {
             'XSRF-TOKEN': xsrf,
         },
         dataType: 'json',
         success: function (response) {
             groups = response;
+            console.log('response: ' + response[0]);
+            updateComboBox(groups);
         },
         error: function (response) {
             alert(response);
         }
     });
-
-    updateComboBox(groups);
 };
 
 
