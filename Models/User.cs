@@ -12,7 +12,8 @@ namespace Assignment_2.Models
         public string PasswordHash { get; set; }
         public string Salt { get; set; }
         public string IsObserver { get; set; }
-        public List<Group> Group { get; set; }
+        public Group Group { get; set; }
+        public int GroupID { get; set; }
     }
 
 }
