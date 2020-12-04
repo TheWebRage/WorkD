@@ -35,9 +35,13 @@ namespace Assignment_2.Pages.Users
             string username = Request.Form["username"].First();
             string passwordHash = Request.Form["passwordHash"].First();
             string salt = Request.Form["salt"].First();
+            string group_name = Request.Form["group_name"].First();
+            string is_observer = Request.Form["is_observer"].First();
 
             var userObjArray = _context.User.Where(x => x.UserName == username);
             string error = "";
+
+            var group = _context.Group.First(x => x.Name == group_name);
             
             if (userObjArray.Any())
             {
@@ -49,7 +53,10 @@ namespace Assignment_2.Pages.Users
                 {
                     UserName = username,
                     PasswordHash = passwordHash,
-                    Salt = salt
+                    Salt = salt,
+                    IsObserver = is_observer,
+                    GroupID = group.ID,
+                    Group = group
                 };
                 _context.User.Add(createdUser);
                 _context.SaveChanges();

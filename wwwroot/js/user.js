@@ -52,6 +52,8 @@ function generatePasswordString(salt, password) {
 
 function submitUserForm() {
     let username_raw = document.getElementById("username_raw").value;
+    let group_name = $('#group-name-raw').value;
+    let is_observer = $('#is-observer').value;
 
     if (username_raw.length < 4) {
         displayError('Username must be at least 4 characters.');
@@ -75,11 +77,15 @@ function submitUserForm() {
 
     let passwordHash = generatePasswordString(salt, raw_password).toString();
 
+    // TODO: Select currently created groups
+
     let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
     let data = {
         'username': username_raw,
         'passwordHash': passwordHash,
         'salt': salt,
+        'group_name': group_name,
+        'is_observer': is_observer,
     }
 
     $.ajax({
