@@ -9,7 +9,7 @@ function generatePiChart(data) {
     let radius = Math.min(width, height) / 2 - margin
 
     // append the svg object to the page
-    let svg = d3.select('body')
+    let svg = d3.select('#pichart')
         .append("svg")
         .attr("width", width)
         .attr("height", height)
