@@ -22,5 +22,48 @@ let groups = ['group1', 'group2', 'group3'];
 updateComboBox(groups);
 
 function updateTable(data) {
+    let table = d3.select('#table')
+        .append('table');
 
+    let row = table.append('tr');
+
+    //add the headers to the table
+    row.append('th')
+        .html('Student');
+
+    row.append('th')
+        .html('Start Time');
+
+    row.append('th')
+        .html('End Time');
+
+    row.append('th')
+        .html('Total Time');
+
+    for (let u of data) {
+        row = table.append('tr');
+
+        row.append('td')
+            .html(u.name);
+
+        row.append('td')
+            .html(u.startTime);
+
+        row.append('td')
+            .html(u.endTime);
+
+        row.append('td')
+            .html(u.totalTime);
+    }
 }
+
+let users = [
+    {
+        name: 'Bob',
+        startTime: '8:30',
+        endTime: '4:30',
+        totalTime: '8'
+    }
+]
+
+updateTable(users);
