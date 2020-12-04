@@ -7,13 +7,13 @@ generatePiChart(data);
 
 let groups = ['group1', 'group2', 'group3'];
 
-document.onload = function () {
-    let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
+window.onload = function () {
     $.ajax({
         type: 'POST',
-        url: 'group/OnPostGroups',
-        headers: {
-            'XSRF-TOKEN': xsrf,
+        url: '/group?handler=Groups',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("XSRF-TOKEN",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
         },
         dataType: 'json',
         success: function (response) {
