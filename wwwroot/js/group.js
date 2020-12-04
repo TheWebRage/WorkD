@@ -15,6 +15,7 @@ function updateComboBox(data) {
             .html(g);
     }
 
+    comboBox.on('change', changeGroup);
 }
 
 let groups = ['group1', 'group2', 'group3'];
@@ -67,3 +68,23 @@ let users = [
 ]
 
 updateTable(users);
+
+function changeGroup() {
+    let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: 'group?handler=TimeEntries',
+        headers: {
+            'XSRF-TOKEN': xsrf,
+        },
+        data: d3.select(''),
+        dataType: 'json',
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (response) {
+            alert(response);
+        }
+    })
+}
