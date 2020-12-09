@@ -9,10 +9,6 @@
     margin-bottom: 20px;
 }
 
-#loginButton1, #loginButton2 {
+#loginButton1/*, #loginButton2, #loginButton3, #playGame {
     display: none;
-}
-
-#playGame {
-    display: block;
-}
+}*/

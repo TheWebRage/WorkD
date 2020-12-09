@@ -237,6 +237,3 @@ _Pvt_Extensions
 .idea
 .idea/**
 /backupOfGameLoop.txt
-
-# So the production database string will be different than the local one
-appsettings.json

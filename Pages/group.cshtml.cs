@@ -30,12 +30,20 @@ namespace Assignment_2.Pages
         /// <returns>JSON</returns>
         public ActionResult OnPostTimeEntries()
         {
+            try
+            {
+                string groupName = Request.Form["groupName"].First();
+                var groupData = _context.TimeLog.Where(x => x.User.Group.Name == groupName);
 
-            string groupName = Request.Form["groupName"].First();
-            var groupData = _context.TimeLog.Where(x => x.User.Group.Name == groupName);
+                return new JsonResult(groupData);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Exception thrown " + e.Message + ". Probably because there was no info in the data base");
+                TimeLog emptyTimeLog = new TimeLog();
 
-
-            return new JsonResult(groupData);
+                return new JsonResult(emptyTimeLog);
+            }            
         }
 
 
@@ -45,21 +53,56 @@ namespace Assignment_2.Pages
         /// <returns>JSON object</returns>
         public JsonResult OnPostGroups()
         {
-            List<string> groups = new List<string>();
+            try
+            {
+                List<string> groups = new List<string>();
 
-            //foreach(var group in _context.Group)
-            //{
-            //    groups.Add(group.Name);
-            //}
-            groups.Add("Group1");
-            groups.Add("Group2");
-            groups.Add("Winne Hut Juniors");
-            groups.Add("Super Wennie Hut Juniors");
-            groups.Add("I hope this t");
+                for (int i = 0; i < _context.Group.Count(); i++)
+                {
+                    groups.Add(_context.Group.ToArray()[i].Name);
+                }
+
+                return new JsonResult(groups);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception thrown " + e.Message + ". Probably because there was no info in the data base");
+                List<string> groups = new List<string>();
+                groups.Add("null");
+                return new JsonResult(groups);
+            }
+
+        }
 
 
-            return new JsonResult(groups);
+        public void OnPostSubmitTime()
+        {
+            DateTime tempStartTime;
+            DateTime tempEndTime;
 
+            try
+            {
+                tempStartTime = DateTime.Parse(Request.Form["StartTime"].First());
+                tempEndTime = DateTime.Parse(Request.Form["EndTime"].First());
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Unable to parse the specified date");
+                return;
+            }
+            
+
+            TimeLog newTimeEntry = new TimeLog
+            {
+                StarTime = tempStartTime,
+                EndTime = tempEndTime,
+                UserID = _context.User.Find(Request.Form["name"].First()).ID,
+                User = _context.User.Find(Request.Form["name"].First()),
+                Description = Request.Form["Description"].First()
+            };
+
+            _context.TimeLog.Add(newTimeEntry);
+            _context.SaveChanges();
         }
     }
 }
