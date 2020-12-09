@@ -89,10 +89,11 @@ namespace Assignment_2.Pages
         /// <summary>
         /// this function is called to save time entries to the database
         /// </summary>
-        public void OnPostSubmitTime()
+        public JsonResult OnPostSubmitTime()
         {
-            DateTime tempStartTime;
-            DateTime tempEndTime;
+            DateTime tempStartTime = new DateTime();
+            DateTime tempEndTime = new DateTime();
+            string error = "";
 
             try
             {
@@ -102,7 +103,7 @@ namespace Assignment_2.Pages
             catch (FormatException)
             {
                 Console.WriteLine("Unable to parse the specified date");
-                return;
+                error = "Unable to parse the specified date";
             }
 
 
@@ -127,6 +128,9 @@ namespace Assignment_2.Pages
 
             _context.TimeLog.Add(newTimeEntry);
             _context.SaveChanges();
+
+            var returnableUser = new ReturnableUser("", "", "", "", error);
+            return new JsonResult(returnableUser);
         }
     }
 }
