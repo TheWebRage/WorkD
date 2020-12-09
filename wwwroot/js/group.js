@@ -18,7 +18,7 @@ window.onload = function () {
         dataType: 'json',
         success: function (response) {
             groups = response;
-            console.log('response: ' + response[0]);
+            console.log('data', response)
             updateComboBox(groups);
         },
         error: function (response) {
@@ -108,7 +108,7 @@ function changeGroup() {
             }
         },
         error: function (response) {
-            alert(response);
+            console.log('data', response);
         }
     });
 }

@@ -28,7 +28,7 @@ namespace Assignment_2.Pages
         /// returns the time log object as a Json object
         /// </summary>
         /// <returns>JSON</returns>
-        public JsonResult OnPostTimeEntries()
+        public ActionResult OnPostTimeEntries()
         {
 
             string groupName = Request.Form["groupName"].First();
@@ -42,15 +42,21 @@ namespace Assignment_2.Pages
         /// <summary>
         /// returns a list of all of the groups
         /// </summary>
-        /// <returns>JSON list</returns>
+        /// <returns>JSON object</returns>
         public JsonResult OnPostGroups()
         {
             List<string> groups = new List<string>();
 
-            foreach( var group in _context.Group)
-            {
-                groups.Add(group.Name);
-            }
+            //foreach(var group in _context.Group)
+            //{
+            //    groups.Add(group.Name);
+            //}
+            groups.Add("Group1");
+            groups.Add("Group2");
+            groups.Add("Winne Hut Juniors");
+            groups.Add("Super Wennie Hut Juniors");
+            groups.Add("I hope this t");
+
 
             return new JsonResult(groups);
 
