@@ -35,8 +35,8 @@ namespace Assignment_2.Pages.Users
             string username = Request.Form["username"].First();
             string passwordHash = Request.Form["passwordHash"].First();
             string salt = Request.Form["salt"].First();
-            string group_name = Request.Form["group_name"].First();
-            string is_observer = Request.Form["is_observer"].First();
+            string group_name = Request.Form["group_name"];
+            string is_observer = Request.Form["is_observer"];
 
             var userObjArray = _context.User.Where(x => x.UserName == username);
             string error = "";
