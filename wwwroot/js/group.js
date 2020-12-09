@@ -125,30 +125,33 @@ function changeGroup() {
     });
 }
 
-function submitTime() {
+d3.select('#confirmButton').on('click', submitTime);
 
+function submitTime() {
     let startTime = document.querySelector('#startTime').value;
     let endTime = document.querySelector('#endTime').value;
     let description = document.querySelector('#description').value;
 
-    if (startTime === null) {
+    if (startTime === '') {
         alert("Please enter valid start time");
     }
-    else if (endTime === null) {
+    else if (endTime === '') {
         alert("Please enter valid end time");
     }
-    else if (description === null) {
+    else if (description === '') {
         alert('Please enter valid description');
     }
     else
     {
-
+        //the object that will be sent to the server
         let temp = {
             name: username,
             StartTime: startTime,
             EndTime: endTime,
             Description: description
         }
+
+        let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
 
         $.ajax({
             type: 'POST',

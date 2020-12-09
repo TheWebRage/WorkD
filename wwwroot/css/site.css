@@ -51,6 +51,7 @@ a {
     border-radius: 15px;
     border: black 5px solid;
     padding: 30px;
+    display: none;
 }
 
 #combo {
