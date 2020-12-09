@@ -33,9 +33,19 @@ namespace Assignment_2.Pages
             try
             {
                 string groupName = Request.Form["groupName"].First();
-                var groupData = _context.TimeLog.Where(x => x.User.Group.Name == groupName);
 
-                return new JsonResult(groupData);
+                List<TimeLog> TimeLogList = new List<TimeLog>();
+
+                for (int i = 0; i < _context.TimeLog.Count(); i++){
+                    if (_context.TimeLog.ToArray()[i].User.Group.Name == groupName)
+                    {
+                        TimeLog timeLogEntry = _context.TimeLog.ToArray()[i];
+                        TimeLogList.Add(timeLogEntry);
+                    }
+                    
+                }
+
+                return new JsonResult(TimeLogList);
             }
             catch(Exception e)
             {
