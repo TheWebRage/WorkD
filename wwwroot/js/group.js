@@ -59,29 +59,42 @@ function updateTable(data) {
         }
     }
 
-    let table = d3.select('#table')
-        .append('table');
-
-    let row = table.append('tr');
-
-    //add the headers to the table
-    row.append('th')
-        .html('Student');
-
-    row.append('th')
-        .html('Start Time');
-
-    row.append('th')
-        .html('End Time');
-
-    row.append('th')
-        .html('Total Time');
+    let userData = {};
+    let users = [];
 
     for (let u of data) {
+        if (typeof (userData[u.user]) === 'undefined') {
+            userData[u.user] = [];
+            users.push(u.user);
+        }
+
+        userData[u.user].push(u);
+    }
+
+
+    for (let u of users) {
+        let table = d3.select('#table')
+            .append('table');
+
+        let row = table.append('tr');
+
+        //add the headers to the table
+        row.append('th')
+            .html('Student');
+
+        row.append('th')
+            .html('Start Time');
+
+        row.append('th')
+            .html('End Time');
+
+        row.append('th')
+            .html('Total Time');
+
         row = table.append('tr');
 
         row.append('td')
-            .html(u.name);
+            .html(u.user);
 
         row.append('td')
             .html(u.startTime);
