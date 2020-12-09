@@ -1,5 +1,7 @@
 ﻿//Gets the username for the current user
 let username = getCookie('username');
+let group = getCookie('group_name');
+let observer = getCookie('is_observing');
 
 ////////    Format for using the pi chart with a JSON object    //////////////////////
 let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
@@ -68,7 +70,11 @@ function updateTable(data) {
     }
 
 
+    let PiChartData = {};
+
     for (let u of users) {
+        let totalTime = 0;
+
         let table = d3.select('#table')
             .append('table');
 
@@ -99,20 +105,74 @@ function updateTable(data) {
             row.append('td')
                 .html(d.endTime);
 
-            let totalTime = new Date(d.endTime) - new Date(d.starTime);
+            let starTime = d.starTime.split('T');
+            let endTime = d.endTime.split('T');
+
+            starTime = starTime[1].split(':');
+            endTime = endTime[1].split(':');
+
+            let startHours = parseInt(starTime[0]);
+            let startMinutes = parseInt(starTime[1]);
+            let startSeconds = parseInt(starTime[2]);
+
+            let endHours = parseInt(endTime[0]);
+            let endMinutes = parseInt(starTime[1]);
+            let endSeconds = parseInt(starTime[2]);
+
+            let totalHours = endHours - startHours;
+            let totalMinutes = endMinutes - startMinutes;
+            let totalSeconds = endSeconds - startSeconds;
+
+            if (totalSeconds < 0) {
+                totalMinutes--;
+                totalSeconds += 60;
+            }
+            if (totalMinutes < 0) {
+                totalHours--;
+                totalMinutes += 60;
+            }
+
+            let stringHours, stringMinutes;
+
+            if (totalHours < 10) {
+                stringHours = '0' + totalHours;
+            }
+            else {
+                stringHours = totalHours.toString();
+            }
+
+            if (totalMinutes < 10) {
+                stringMinutes = '0' + totalMinutes;
+            }
+            else {
+                stringMinutes = totalMinutes.toString();
+            }
 
             row.append('td')
-                .html(totalTime);
+                .html(stringHours + ':' + stringMinutes);
+
+            totalMinutes += totalHours * 60;
+            totalSeconds += totalMinutes * 60;
+            totalTime += totalSeconds;
         }
+
+        PiChartData[u] = totalTime;
     }
+
+    generatePiChart(PiChartData);
 }
 
 let users = [
     {
-        name: 'Bob',
-        startTime: '8:30',
-        endTime: '4:30',
-        totalTime: '8',
+        user: 'Bob',
+        starTime: '2020-12-08T08:00:00',
+        endTime: '2020-12-08T15:00:00',
+        description: 'I worked'
+    },
+    {
+        user: 'Joe',
+        starTime: '2020-12-08T08:00:00',
+        endTime: '2020-12-08T15:00:00',
         description: 'I worked'
     }
 ]
@@ -131,15 +191,21 @@ function changeGroup() {
         data: d3.select('#combobox').node().value,
         dataType: 'json',
         success: function (response) {
-            for (let o of response) {
-                console.log(o.key + ':');
-                console.log(o.value + ' ');
-            }
+            updateTable(response);
         },
         error: function (response) {
             console.log('data', response);
         }
     });
+
+    let combobox = document.querySelector('#combobox');
+
+    if ((group === combobox.value) && (observer === 'null')) {
+        document.querySelector('#newEntry').style.display = 'block';
+    }
+    else {
+        document.querySelector('#newEntry').style.display = 'none';
+    }
 }
 
 d3.select('#confirmButton').on('click', submitTime);
