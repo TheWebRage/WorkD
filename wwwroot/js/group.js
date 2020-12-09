@@ -3,6 +3,8 @@ let username = getCookie('username');
 let group = getCookie('group_name');
 let observer = getCookie('is_observing');
 
+console.log(username + ' ' + group + ' ' + observer);
+
 ////////    Format for using the pi chart with a JSON object    //////////////////////
 let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
 
@@ -124,11 +126,13 @@ function changeGroup() {
         }
     });
 
-    if (group === d3.select('#combobox').node().value && !observer) {
-        document.getElementById('#newEntry').style.display = 'block';
+    let combobox = document.querySelector('#combobox');
+
+    if ((group === combobox.value) && (observer === 'null')) {
+        document.querySelector('#newEntry').style.display = 'block';
     }
     else {
-        ocument.getElementById('#newEntry').style.display = 'none';
+        document.querySelector('#newEntry').style.display = 'none';
     }
 }
 
