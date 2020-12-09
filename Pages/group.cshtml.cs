@@ -50,9 +50,11 @@ namespace Assignment_2.Pages
             catch(Exception e)
             {
                 Console.WriteLine("Exception thrown " + e.Message + ". Probably because there was no info in the data base");
+                List<TimeLog> timeLogList = new List<TimeLog>();
                 TimeLog emptyTimeLog = new TimeLog();
+                timeLogList.Add(emptyTimeLog);
 
-                return new JsonResult(emptyTimeLog);
+                return new JsonResult(timeLogList);
             }            
         }
 
@@ -102,14 +104,24 @@ namespace Assignment_2.Pages
                 Console.WriteLine("Unable to parse the specified date");
                 return;
             }
-            
+
+
+            int index = 0;
+            for ( int j = 0; j < _context.User.Count(); j++)
+            {
+                if(_context.User.ToArray()[j].UserName == Request.Form["name"].First()){
+                    index = j;
+                    break;
+                }
+            }
+
 
             TimeLog newTimeEntry = new TimeLog
             {
                 StarTime = tempStartTime,
                 EndTime = tempEndTime,
-                UserID = _context.User.Find(Request.Form["name"].First()).ID,
-                User = _context.User.Find(Request.Form["name"].First()),
+                UserID = _context.User.ToArray()[index].ID,
+                User = _context.User.ToArray()[index],
                 Description = Request.Form["Description"].First()
             };
 
