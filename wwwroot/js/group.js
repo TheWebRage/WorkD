@@ -1,4 +1,6 @@
-﻿
+﻿//Gets the username for the current user
+let username = getCookie('username');
+
 ////////    Format for using the pi chart with a JSON object    //////////////////////
 let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
 
@@ -44,6 +46,15 @@ function updateComboBox(data) {
 }
 
 function updateTable(data) {
+    let tempTable = document.getElementById('table');
+
+    //Removes the old table if it exists
+    if (typeof (tempTable) !== 'undefined' && tempTable !== null) {
+        for (let o of tempTable.children) {
+            o.remove();
+        }
+    }
+
     let table = d3.select('#table')
         .append('table');
 
@@ -84,7 +95,8 @@ let users = [
         name: 'Bob',
         startTime: '8:30',
         endTime: '4:30',
-        totalTime: '8'
+        totalTime: '8',
+        description: 'I worked'
     }
 ]
 
@@ -111,4 +123,64 @@ function changeGroup() {
             console.log('data', response);
         }
     });
+}
+
+function submitTime() {
+
+    let startTime = document.querySelector('#startTime').value;
+    let endTime = document.querySelector('#endTime').value;
+    let description = document.querySelector('#description').value;
+
+    if (startTime === null) {
+        alert("Please enter valid start time");
+    }
+    else if (endTime === null) {
+        alert("Please enter valid end time");
+    }
+    else if (description === null) {
+        alert('Please enter valid description');
+    }
+    else
+    {
+
+        let temp = {
+            name: username,
+            StartTime: startTime,
+            EndTime: endTime,
+            Description: description
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'group?handler=SubmitTime',
+            headers: {
+                'XSRF-TOKEN': xsrf,
+            },
+            data: temp,
+            dataType: 'json',
+            success: function (response) {
+                console.log('data', response);
+            },
+            error: function (response) {
+                alert('There has been an error: ' + response);
+            }
+         });
+    }
+}
+
+
+//Gets the cookie with the given name
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
