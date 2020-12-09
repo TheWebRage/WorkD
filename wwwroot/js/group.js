@@ -9,7 +9,7 @@ console.log(username + ' ' + group + ' ' + observer);
 let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
 
 ////////    Function to generate the pi chart
-generatePiChart(data);
+//generatePiChart(data);
 
 let groups = ['group1', 'group2', 'group3'];
 
@@ -77,14 +77,16 @@ function updateTable(data) {
     for (let u of users) {
         let totalTime = 0;
 
+        d3.select('#table')
+            .append('h2')
+            .html(u);
+
         let table = d3.select('#table')
             .append('table');
 
         let row = table.append('tr');
 
         //add the headers to the table
-        row.append('th')
-            .html('Student');
 
         row.append('th')
             .html('Start Time');
@@ -97,9 +99,6 @@ function updateTable(data) {
 
         for (let d of userData[u]) {
             row = table.append('tr');
-
-            row.append('td')
-                .html(d.user);
 
             row.append('td')
                 .html(d.starTime);
@@ -167,7 +166,7 @@ function updateTable(data) {
 let users = [
     {
         user: 'Bob',
-        starTime: '2020-12-08T08:00:00',
+        starTime: '2020-12-08T10:00:00',
         endTime: '2020-12-08T15:00:00',
         description: 'I worked'
     },
@@ -179,7 +178,7 @@ let users = [
     }
 ]
 
-//updateTable(users);
+updateTable(users);
 
 function changeGroup() {
     let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
@@ -193,6 +192,7 @@ function changeGroup() {
         data: d3.select('#combobox').node().value,
         dataType: 'json',
         success: function (response) {
+            console.log('data', response);
             updateTable(response);
         },
         error: function (response) {
