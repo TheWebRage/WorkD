@@ -1,6 +1,7 @@
 ﻿@page
 @model Assignment_2.Pages.groupModel
 @{
+    ViewData["Title"] = "Groups";
 }
 @* Includes combo box to select which group to view *@
 <div id="combo">
@@ -22,12 +23,13 @@
     <input type="submit" value="Submit" id="confirmButton" />
 </div>
 @* Includes group results *@
-<div id="results"><center>
-    @* Includes Pie Chart *@
-    <div id="pichart">
-        <h2>Group Results</h2>
-    </div>
-</center>
+<div id="results">
+    <center>
+        @* Includes Pie Chart *@
+        <div id="pichart">
+            <h2>Group Results</h2>
+        </div>
+    </center>
     @* Inludes all user result tables *@
     <div id="table"></div>
 </div>
