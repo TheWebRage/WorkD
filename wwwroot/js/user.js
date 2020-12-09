@@ -55,6 +55,10 @@ function submitUserForm() {
     let group_name = d3.select('#combobox').node().value;
     let is_observer = $('#is-observer').value;
 
+    if ($('#is-observer')[0].checked == false) {
+        is_observer = 'null';
+    }
+
     if (username_raw.length < 4) {
         displayError('Username must be at least 4 characters.');
         return;
@@ -231,6 +235,14 @@ function updateComboBox(data) {
         });
 }
 
+function removeGroup() {
+    if ($('#is-observer')[0].checked === true) {
+        $('#group-name-collector')[0].style.display = 'none';
+    } else {
+        $('#group-name-collector')[0].style.display = 'block';
+    }
+}
+
 window.onload = function () {
     if (document.getElementById("loginButton3")) {
 
@@ -243,31 +255,23 @@ window.onload = function () {
             document.getElementById("loginButton2").style.display = 'block';
         }
     } else {
-        // Get the data for the dropdown object
-        // TODO: wait for daniel to finish the endpoint for getting groups
-        //$.ajax({
-        //    type: "POST",
-        //    url: "login",
-        //    headers: {
-        //        "XSRF-TOKEN": xsrf,
-        //    },
-        //    data: data,
-        //    dataType: 'json',
-        //    success: function (response) {
-        //        if (response.error) {
-        //            displayError(response.error);
-        //        }
-        //        else if (response.userName.toLowerCase() === username.toLowerCase()) {
-        //            checkLoginCredentials(username, response.salt, password);
-        //        } else {
-        //            displayError('Username is not found.');
-        //        }
-        //    },
-        //    error: function (response) {
-        //        displayError('Username is not found.');
-        //    }
-        //});
+        $.ajax({
+            type: 'POST',
+            url: '/group?handler=Groups',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            dataType: 'json',
+            success: function (response) {
+                groups = response;
+                updateComboBox(groups);
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
 
-        updateComboBox(['Group 1', 'Group 2', 'Group 3']);
+        d3.select('#is-observer').on('change', removeGroup);
     }
 }
