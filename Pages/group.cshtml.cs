@@ -12,10 +12,9 @@ namespace Assignment_2.Pages
 {
     public class groupModel : PageModel
     {
+        #region notRelevant
         public void OnGet()
-        {
-
-        }
+        {}
 
         private readonly Assignment_2.Data.Assignment_2Context _context;
 
@@ -23,6 +22,7 @@ namespace Assignment_2.Pages
         {
             _context = context;
         }
+        #endregion//cleaned up code that is not normally viewed
 
         /// <summary>
         /// returns the time log object as a Json object
@@ -74,7 +74,9 @@ namespace Assignment_2.Pages
 
         }
 
-
+        /// <summary>
+        /// this function is called to save time entries to the database
+        /// </summary>
         public void OnPostSubmitTime()
         {
             DateTime tempStartTime;
