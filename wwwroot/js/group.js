@@ -91,19 +91,23 @@ function updateTable(data) {
         row.append('th')
             .html('Total Time');
 
-        row = table.append('tr');
+        for (let d of userData[u]) {
+            row = table.append('tr');
 
-        row.append('td')
-            .html(u.user);
+            row.append('td')
+                .html(d.user);
 
-        row.append('td')
-            .html(u.startTime);
+            row.append('td')
+                .html(d.starTime);
 
-        row.append('td')
-            .html(u.endTime);
+            row.append('td')
+                .html(d.endTime);
 
-        row.append('td')
-            .html(u.totalTime);
+            let totalTime = new Date(d.endTime) - new Date(d.starTime);
+
+            row.append('td')
+                .html(totalTime);
+        }
     }
 }
 
