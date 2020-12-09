@@ -236,11 +236,11 @@ window.onload = function () {
 
         //TODO: add in that they are made visible instead of the other way
         if (getCookie('username') === '') {
-            document.getElementById("playGame").style.display = 'none';
-            document.getElementById("loginButton3").style.display = 'none';
+            document.getElementById("playGame").style.display = 'block';
+            document.getElementById("loginButton3").style.display = 'block';
         } else {
-            document.getElementById("loginButton1").style.display = 'none';
-            document.getElementById("loginButton2").style.display = 'none';
+            document.getElementById("loginButton1").style.display = 'block';
+            document.getElementById("loginButton2").style.display = 'block';
         }
     } else {
         // Get the data for the dropdown object
