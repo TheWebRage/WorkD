@@ -55,6 +55,10 @@ function submitUserForm() {
     let group_name = d3.select('#combobox').node().value;
     let is_observer = $('#is-observer')[0].value;
 
+    if ($('#is-observer')[0].checked == false) {
+        is_observer = 'null';
+    }
+
     if (username_raw.length < 4) {
         displayError('Username must be at least 4 characters.');
         return;
@@ -233,6 +237,14 @@ function updateComboBox(data) {
         });
 }
 
+function removeGroup() {
+    if ($('#is-observer')[0].checked === true) {
+        $('#group-name-collector')[0].style.display = 'none';
+    } else {
+        $('#group-name-collector')[0].style.display = 'block';
+    }
+}
+
 window.onload = function () {
     if (document.getElementById("loginButton3")) {
 
@@ -244,8 +256,6 @@ window.onload = function () {
             document.getElementById("loginButton3").style.display = 'block';
         }
     } else {
-        // Get the data for the dropdown object
-        // TODO: wait for daniel to finish the endpoint for getting groups
         $.ajax({
             type: 'POST',
             url: '/group?handler=Groups',
@@ -262,6 +272,7 @@ window.onload = function () {
                 alert(response);
             }
         });
-        
+
+        d3.select('#is-observer').on('change', removeGroup);
     }
 }
