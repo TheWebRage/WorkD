@@ -156,7 +156,7 @@ function checkLoginCredentials(username, salt, password) {
                 displayError(res.error);
             } else {
                 setCookie('username', res.userName, 2);
-                setCookie('group_name', res.group-name, 2);
+                setCookie('group_name', res.group_name, 2);
                 setCookie('is_observing', res.is_observing, 2);
                 window.location.replace('../../group');
             }
@@ -246,29 +246,22 @@ window.onload = function () {
     } else {
         // Get the data for the dropdown object
         // TODO: wait for daniel to finish the endpoint for getting groups
-        //$.ajax({
-        //    type: "POST",
-        //    url: "login",
-        //    headers: {
-        //        "XSRF-TOKEN": xsrf,
-        //    },
-        //    data: data,
-        //    dataType: 'json',
-        //    success: function (response) {
-        //        if (response.error) {
-        //            displayError(response.error);
-        //        }
-        //        else if (response.userName.toLowerCase() === username.toLowerCase()) {
-        //            checkLoginCredentials(username, response.salt, password);
-        //        } else {
-        //            displayError('Username is not found.');
-        //        }
-        //    },
-        //    error: function (response) {
-        //        displayError('Username is not found.');
-        //    }
-        //});
-
-        updateComboBox(['Group 1', 'Group 2', 'Group 3']);
+        $.ajax({
+            type: 'POST',
+            url: '/group?handler=Groups',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            dataType: 'json',
+            success: function (response) {
+                groups = response;
+                updateComboBox(groups);
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+        
     }
 }
