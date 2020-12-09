@@ -26,6 +26,7 @@ window.onload = function () {
             groups = response;
             console.log('data', response)
             updateComboBox(groups);
+            changeGroup();
         },
         error: function (response) {
             alert(response);
@@ -51,10 +52,17 @@ function updateComboBox(data) {
 
 function updateTable(data) {
     let tempTable = document.getElementById('table');
+    let tempPieChart = document.getElementById('pichart');
 
     //Removes the old table if it exists
     if (typeof (tempTable) !== 'undefined' && tempTable !== null) {
         for (let o of tempTable.children) {
+            o.remove();
+        }
+    }
+    // Removes the old pi chart if it exists
+    if (typeof (tempPieChart) !== 'undefined' && tempPieChart !== null) {
+        for (let o of tempPieChart.children) {
             o.remove();
         }
     }
@@ -95,6 +103,9 @@ function updateTable(data) {
             .html('End Time');
 
         row.append('th')
+            .html('Description');
+
+        row.append('th')
             .html('Total Time');
 
         for (let d of userData[u]) {
@@ -105,6 +116,9 @@ function updateTable(data) {
 
             row.append('td')
                 .html(d.endTime);
+
+            row.append('td')
+                .html(d.description);
 
             let starTime = d.starTime.split('T');
             let endTime = d.endTime.split('T');
