@@ -52,7 +52,7 @@ function generatePasswordString(salt, password) {
 
 function submitUserForm() {
     let username_raw = document.getElementById("username_raw").value;
-    let group_name = $('#group-name-raw').value;
+    let group_name = d3.select('#combobox').node().value;
     let is_observer = $('#is-observer').value;
 
     if (username_raw.length < 4) {
@@ -66,6 +66,18 @@ function submitUserForm() {
 
     if (raw_password.length < 8) {
         displayError('Password must be at least 8 characters.');
+        return;
+    }
+
+    if (group_name === 'Create New Group') {
+        group_name = $('#group-name-raw')[0].value;
+
+        if (group_name === 'Create New Group') {
+            displayError('Password must be at least 8 characters.');
+            return;
+        }
+    } else if (group_name.length < 4 ) {
+        displayError('Group Name must be at least 4 characters.');
         return;
     }
 
@@ -144,7 +156,7 @@ function checkLoginCredentials(username, salt, password) {
                 displayError(res.error);
             } else {
                 setCookie('username', res.userName, 2);
-                window.location.replace('../../game');
+                window.location.replace('../../group');
             }
 
         },
@@ -190,16 +202,72 @@ function login() {
 
 }
 
+function updateComboBox(data) {
+
+    if (document.getElementById("combobox")) {
+        return;
+    }
+
+    let comboBox = d3.select('#combo').append('select').attr('id', 'combobox');
+
+    for (let g of data) {
+        comboBox.append('option')
+            .attr('value', g)
+            .html(g);
+    }
+
+    comboBox.append('option')
+        .attr('value', 'Create New Group').attr('id', 'create-new-group')
+        .html('Create New Group');
+
+    comboBox.on('change',
+        () => {
+            group = d3.select('#combobox').node().value;
+            if (group === 'Create New Group') {
+                d3.select('#group-name-div').node().style.display = 'block';
+            } else {
+                d3.select('#group-name-div').node().style.display = 'none';
+            }
+        });
+}
+
 window.onload = function () {
     if (document.getElementById("loginButton3")) {
 
         //TODO: add in that they are made visible instead of the other way
         if (getCookie('username') === '') {
-            document.getElementById("playGame").style.display = 'none';
-            document.getElementById("loginButton3").style.display = 'none';
+            document.getElementById("playGame").style.display = 'block';
+            document.getElementById("loginButton3").style.display = 'block';
         } else {
-            document.getElementById("loginButton1").style.display = 'none';
-            document.getElementById("loginButton2").style.display = 'none';
+            document.getElementById("loginButton1").style.display = 'block';
+            document.getElementById("loginButton2").style.display = 'block';
         }
+    } else {
+        // Get the data for the dropdown object
+        // TODO: wait for daniel to finish the endpoint for getting groups
+        //$.ajax({
+        //    type: "POST",
+        //    url: "login",
+        //    headers: {
+        //        "XSRF-TOKEN": xsrf,
+        //    },
+        //    data: data,
+        //    dataType: 'json',
+        //    success: function (response) {
+        //        if (response.error) {
+        //            displayError(response.error);
+        //        }
+        //        else if (response.userName.toLowerCase() === username.toLowerCase()) {
+        //            checkLoginCredentials(username, response.salt, password);
+        //        } else {
+        //            displayError('Username is not found.');
+        //        }
+        //    },
+        //    error: function (response) {
+        //        displayError('Username is not found.');
+        //    }
+        //});
+
+        updateComboBox(['Group 1', 'Group 2', 'Group 3']);
     }
 }

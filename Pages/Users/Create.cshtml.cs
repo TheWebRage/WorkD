@@ -41,14 +41,35 @@ namespace Assignment_2.Pages.Users
             var userObjArray = _context.User.Where(x => x.UserName == username);
             string error = "";
 
-            var group = _context.Group.First(x => x.Name == group_name);
-            
+            var any_group = _context.Group.Where(x => x.Name == group_name);
+            Group group;
+
+            if (!any_group.Any())
+            {
+                group = new Group
+                {
+                    Name = group_name,
+                };
+            }
+            else
+            {
+                group = _context.Group.First(x => x.Name == group_name);
+            }
+
             if (userObjArray.Any())
             {
                 error = "Username already exists.";
             }
             else
             {
+                if (group == null)
+                {
+                    group = new Group
+                    {
+                        Name = group_name,
+                    };
+                }
+
                 User createdUser = new User
                 {
                     UserName = username,
