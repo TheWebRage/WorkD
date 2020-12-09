@@ -8,13 +8,7 @@ namespace Assignment_2.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TimeLog");
-
-            migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "Group");
 
             migrationBuilder.CreateTable(
                 name: "Group",
