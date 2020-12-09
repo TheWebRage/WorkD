@@ -35,6 +35,34 @@ a {
     margin: 15px;
 }
 
+#results {
+    background-color: white;
+    border-radius: 15px;
+    border: black 5px solid;
+    padding: 30px;
+}
+#table, th, td {
+    border: 1px solid black;
+    text-align: center;
+}
+
+#newEntry {
+    background-color: white;
+    border-radius: 15px;
+    border: black 5px solid;
+    padding: 30px;
+}
+
+#combo {
+    background-color: white;
+    border-radius: 15px;
+    border: black 5px solid;
+    padding: 30px;
+}
+h2 {
+    text-align: center;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

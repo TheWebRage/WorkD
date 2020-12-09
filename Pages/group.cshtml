@@ -2,21 +2,34 @@
 @model Assignment_2.Pages.groupModel
 @{
 }
+@* Includes combo box to select which group to view *@
+<div id="combo">
+    <h2>Select Group to View</h2>
+</div>
 
-<label for="startTime">Select Start Time: </label>
-<input type="time" id="startTime" />
+@* New Entry fields *@
+<div id="newEntry">
+    <h2>Add New Time Entry</h2>
+    <label for="startTime">Select Start Time: </label>
+    <input type="time" id="startTime" />
 
-<label for="endTime">Select End Time: </label>
-<input type="time" id="endTime" />
+    <label for="endTime">Select End Time: </label>
+    <input type="time" id="endTime" />
 
-<label for="description">Description: </label>
-<input type="text" id="description" />
+    <label for="description">Description: </label>
+    <input type="text" id="description" />
 
-<input type="submit" value="Submit" id="confirmButton" />
-
-<div id="combo"></div>
-<div id="table"></div>
-<div id="pichart"></div>
+    <input type="submit" value="Submit" id="confirmButton" />
+</div>
+<div id="results"><center>
+    @* Includes Pie Chart *@
+    <div id="pichart">
+        <h2>Group Results</h2>
+    </div>
+</center>
+    @* Inludes all user result tables *@
+    <div id="table"></div>
+</div>
 
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
