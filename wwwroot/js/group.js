@@ -1,5 +1,9 @@
 ﻿//Gets the username for the current user
 let username = getCookie('username');
+let group = getCookie('group_name');
+let observer = getCookie('is_observing');
+
+console.log(username + ' ' + group + ' ' + observer);
 
 ////////    Format for using the pi chart with a JSON object    //////////////////////
 let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
@@ -100,7 +104,7 @@ let users = [
     }
 ]
 
-updateTable(users);
+//updateTable(users);
 
 function changeGroup() {
     let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
@@ -114,15 +118,22 @@ function changeGroup() {
         data: d3.select('#combobox').node().value,
         dataType: 'json',
         success: function (response) {
-            for (let o of response) {
-                console.log(o.key + ':');
-                console.log(o.value + ' ');
-            }
+            console.log('data', response);
+            //updateTable(response);
         },
         error: function (response) {
             console.log('data', response);
         }
     });
+
+    let combobox = document.querySelector('#combobox');
+
+    if ((group === combobox.value) && (observer === 'null')) {
+        document.querySelector('#newEntry').style.display = 'block';
+    }
+    else {
+        document.querySelector('#newEntry').style.display = 'none';
+    }
 }
 
 d3.select('#confirmButton').on('click', submitTime);
