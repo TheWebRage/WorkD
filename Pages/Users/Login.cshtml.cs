@@ -23,7 +23,7 @@ namespace Assignment_2.Pages.Users
         {
             if (!_context.User.Any())
             {
-                var returnable = new ReturnableUser("", "", "No users in Database.");
+                var returnable = new ReturnableUser("", "", "", "", "No users in Database.");
                 return new JsonResult(returnable);
             }
 
@@ -32,6 +32,8 @@ namespace Assignment_2.Pages.Users
 
             User userObj = _context.User.Where(x => x.UserName == username).First();
             string error = "";
+            string is_observing = "";
+            string group_name = "";
 
             if (userObj.ID <= 0)
             {
@@ -41,8 +43,13 @@ namespace Assignment_2.Pages.Users
             {
                 error = "Password is incorrect.";
             }
+            else
+            {
+                is_observing = userObj.IsObserver;
+                group_name = _context.Group.First(x => x.ID == userObj.GroupID).Name;
+            }
 
-            var returnableUser = new ReturnableUser(userObj.UserName, userObj.Salt, error);
+            var returnableUser = new ReturnableUser(userObj.UserName, userObj.Salt, is_observing, group_name, error);
             return new JsonResult(returnableUser);
         }
 

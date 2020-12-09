@@ -53,7 +53,7 @@ function generatePasswordString(salt, password) {
 function submitUserForm() {
     let username_raw = document.getElementById("username_raw").value;
     let group_name = d3.select('#combobox').node().value;
-    let is_observer = $('#is-observer').value;
+    let is_observer = $('#is-observer')[0].value;
 
     if (username_raw.length < 4) {
         displayError('Username must be at least 4 characters.');
@@ -156,6 +156,8 @@ function checkLoginCredentials(username, salt, password) {
                 displayError(res.error);
             } else {
                 setCookie('username', res.userName, 2);
+                setCookie('group_name', res.group-name, 2);
+                setCookie('is_observing', res.is_observing, 2);
                 window.location.replace('../../group');
             }
 
