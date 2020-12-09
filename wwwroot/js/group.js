@@ -3,6 +3,8 @@ let username = getCookie('username');
 let group = getCookie('group_name');
 let observer = getCookie('is_observing');
 
+console.log(username + ' ' + group + ' ' + observer);
+
 ////////    Format for using the pi chart with a JSON object    //////////////////////
 let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
 
@@ -177,7 +179,7 @@ let users = [
     }
 ]
 
-updateTable(users);
+//updateTable(users);
 
 function changeGroup() {
     let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();

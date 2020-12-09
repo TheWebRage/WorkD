@@ -53,7 +53,7 @@ function generatePasswordString(salt, password) {
 function submitUserForm() {
     let username_raw = document.getElementById("username_raw").value;
     let group_name = d3.select('#combobox').node().value;
-    let is_observer = $('#is-observer').value;
+    let is_observer = $('#is-observer')[0].value;
 
     if ($('#is-observer')[0].checked == false) {
         is_observer = 'null';
@@ -160,6 +160,8 @@ function checkLoginCredentials(username, salt, password) {
                 displayError(res.error);
             } else {
                 setCookie('username', res.userName, 2);
+                setCookie('group_name', res.group_name, 2);
+                setCookie('is_observing', res.is_observing, 2);
                 window.location.replace('../../group');
             }
 
@@ -246,13 +248,12 @@ function removeGroup() {
 window.onload = function () {
     if (document.getElementById("loginButton3")) {
 
-        //TODO: add in that they are made visible instead of the other way
         if (getCookie('username') === '') {
-            document.getElementById("playGame").style.display = 'block';
-            document.getElementById("loginButton3").style.display = 'block';
-        } else {
             document.getElementById("loginButton1").style.display = 'block';
             document.getElementById("loginButton2").style.display = 'block';
+        } else {
+            document.getElementById("playGame").style.display = 'block';
+            document.getElementById("loginButton3").style.display = 'block';
         }
     } else {
         $.ajax({
