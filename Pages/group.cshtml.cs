@@ -96,7 +96,7 @@ namespace Assignment_2.Pages
 
             TimeLog newTimeEntry = new TimeLog
             {
-                StarTime = tempStartTime,
+                StartTime = tempStartTime,
                 EndTime = tempEndTime,
                 UserID = _context.User.Find(Request.Form["name"].First()).ID,
                 User = _context.User.Find(Request.Form["name"].First()),
