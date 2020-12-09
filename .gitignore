@@ -240,3 +240,5 @@ _Pvt_Extensions
 
 # So the production database string will be different than the local one
 appsettings.json
+/Migrations/20201209042012_InitialCreate.cs
+/Migrations/20201209042012_InitialCreate.Designer.cs
