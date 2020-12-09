@@ -240,6 +240,9 @@ function submitTime() {
     else if (description === '') {
         alert('Please enter valid description');
     }
+    else if (description.length < 5) {
+        alert('Please enter a longer description');
+    }
     else
     {
         //the object that will be sent to the server
