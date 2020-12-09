@@ -44,7 +44,7 @@ namespace Assignment_2.Pages.Users
             var any_group = _context.Group.Where(x => x.Name == group_name);
             Group group;
 
-            if (any_group.Count() == 0 || !any_group.Any())
+            if (!any_group.Any())
             {
                 group = new Group
                 {
@@ -62,13 +62,13 @@ namespace Assignment_2.Pages.Users
             }
             else
             {
-                //if (group == null)
-                //{
-                //    group = new Group
-                //    {
-                //        Name = group_name,
-                //    };
-                //}
+                if (group == null)
+                {
+                    group = new Group
+                    {
+                        Name = group_name,
+                    };
+                }
 
                 User createdUser = new User
                 {
@@ -83,7 +83,7 @@ namespace Assignment_2.Pages.Users
                 _context.SaveChanges();
             }
 
-            var returnableUser = new ReturnableUser("", "", "","", error);
+            var returnableUser = new ReturnableUser("", "", error);
             return new JsonResult(returnableUser);
         }
     }

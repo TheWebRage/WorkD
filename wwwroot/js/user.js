@@ -53,7 +53,11 @@ function generatePasswordString(salt, password) {
 function submitUserForm() {
     let username_raw = document.getElementById("username_raw").value;
     let group_name = d3.select('#combobox').node().value;
-    let is_observer = $('#is-observer')[0].value;
+    let is_observer = $('#is-observer').value;
+
+    if ($('#is-observer')[0].checked == false) {
+        is_observer = 'null';
+    }
 
     if (username_raw.length < 4) {
         displayError('Username must be at least 4 characters.');
@@ -156,8 +160,6 @@ function checkLoginCredentials(username, salt, password) {
                 displayError(res.error);
             } else {
                 setCookie('username', res.userName, 2);
-                setCookie('group_name', res.group_name, 2);
-                setCookie('is_observing', res.is_observing, 2);
                 window.location.replace('../../group');
             }
 
@@ -233,19 +235,26 @@ function updateComboBox(data) {
         });
 }
 
+function removeGroup() {
+    if ($('#is-observer')[0].checked === true) {
+        $('#group-name-collector')[0].style.display = 'none';
+    } else {
+        $('#group-name-collector')[0].style.display = 'block';
+    }
+}
+
 window.onload = function () {
     if (document.getElementById("loginButton3")) {
 
+        //TODO: add in that they are made visible instead of the other way
         if (getCookie('username') === '') {
-            document.getElementById("loginButton1").style.display = 'block';
-            document.getElementById("loginButton2").style.display = 'block';
-        } else {
             document.getElementById("playGame").style.display = 'block';
             document.getElementById("loginButton3").style.display = 'block';
+        } else {
+            document.getElementById("loginButton1").style.display = 'block';
+            document.getElementById("loginButton2").style.display = 'block';
         }
     } else {
-        // Get the data for the dropdown object
-        // TODO: wait for daniel to finish the endpoint for getting groups
         $.ajax({
             type: 'POST',
             url: '/group?handler=Groups',
@@ -262,6 +271,7 @@ window.onload = function () {
                 alert(response);
             }
         });
-        
+
+        d3.select('#is-observer').on('change', removeGroup);
     }
 }
