@@ -28,6 +28,7 @@ window.onload = function () {
             //console.log('data', response)
 
             updateComboBox(groups);
+            changeGroup();
 
             let box = document.getElementById('combobox');
 
@@ -44,7 +45,7 @@ window.onload = function () {
         }
     });
 
-    changeGroup();
+    //setTimeout(500, changeGroup);
 
     //shows the time entries at the opening of the webpage
     if (observer === 'null') {
@@ -67,6 +68,7 @@ function updateComboBox(data) {
             .html(g);
     }
 
+    //Makes the combobox run changeGroup when changed
     comboBox.on('change', changeGroup);
 }
 
@@ -86,30 +88,33 @@ function updateTable(data) {
         tempPieChart.removeChild(tempPieChart.firstChild);
     }
 
+    //A dictionary that stores an array for each user, the array contains all the rows for the user
     let userData = {};
+
+    //Stores the user names
     let users = [];
 
+    //Populates userData and users
     for (let u of data) {
-        if (typeof (userData[u.user]) === 'undefined') {
-            userData[u.user] = [];
-            users.push(u.user);
+        if (typeof (userData[u.user.userName]) === 'undefined') {
+            userData[u.user.userName] = [];
+            users.push(u.user.userName);
         }
 
-        userData[u.user].push(u);
+        userData[u.user.userName].push(u);
     }
 
-
+    //Holds the data in the correct format for the pi chart
+    //The format is user: time in seconds
     let PiChartData = {};
 
+    //Creates one table for each user
     for (let u of users) {
-        if (u === null || u.user === null) {
-            d3.select('#table')
-                .append('h2')
-                .html('There are currently no time entries for this group');
-            break;
-        }
+
+        //Time for the current user, to be added to the pi chart data
         let totalTime = 0;
 
+        //Adds the user name as a title for the next table
         d3.select('#table')
             .append('h2')
             .html(u);
@@ -133,6 +138,7 @@ function updateTable(data) {
         row.append('th')
             .html('Total Time');
 
+        //adds the rows to the tables
         for (let d of userData[u]) {
             row = table.append('tr');
 
@@ -145,12 +151,18 @@ function updateTable(data) {
             row.append('td')
                 .html(d.description);
 
+            //////////////////////////////////////////////
+            //  Calculates total times for the current row
+            //////////////////////////////////////////////
+
+            //Parses the time strings
             let starTime = d.starTime.split('T');
             let endTime = d.endTime.split('T');
 
             starTime = starTime[1].split(':');
             endTime = endTime[1].split(':');
 
+            //gets the values for hours minutes and seconds
             let startHours = parseInt(starTime[0]);
             let startMinutes = parseInt(starTime[1]);
             let startSeconds = parseInt(starTime[2]);
@@ -159,10 +171,12 @@ function updateTable(data) {
             let endMinutes = parseInt(starTime[1]);
             let endSeconds = parseInt(starTime[2]);
 
+            //The actual subtraction
             let totalHours = endHours - startHours;
             let totalMinutes = endMinutes - startMinutes;
             let totalSeconds = endSeconds - startSeconds;
 
+            //Fixes negative values
             if (totalSeconds < 0) {
                 totalMinutes--;
                 totalSeconds += 60;
@@ -174,6 +188,7 @@ function updateTable(data) {
 
             let stringHours, stringMinutes;
 
+            //Adds a 0 before the number if it's a single digit
             if (totalHours < 10) {
                 stringHours = '0' + totalHours;
             }
@@ -181,6 +196,7 @@ function updateTable(data) {
                 stringHours = totalHours.toString();
             }
 
+            //adds a 0 before the minutes if it's a single digit
             if (totalMinutes < 10) {
                 stringMinutes = '0' + totalMinutes;
             }
@@ -191,6 +207,7 @@ function updateTable(data) {
             row.append('td')
                 .html(stringHours + ':' + stringMinutes);
 
+            //Converts the total time to seconds
             totalMinutes += totalHours * 60;
             totalSeconds += totalMinutes * 60;
             totalTime += totalSeconds;
@@ -199,17 +216,27 @@ function updateTable(data) {
         d3.select('#table')
             .append('br');
 
+        //Adds the time to the pi chart data with the user name as the key and the time as the value
         PiChartData[u] = totalTime;
     }
 
-    generatePiChart(PiChartData);
+    //Shows a message if there are no users
+    if (typeof (data[0]) === 'undefined') {
+        d3.select('#table')
+            .append('h2')
+            .html('There are currently no time entries for this group');
+    } else {
+        //creates the pi chart
+        generatePiChart(PiChartData);
+    }
+
+    
 }
 
 //Activates when the combobox is changed
 //Requests times from the server, then updates the tables
 function changeGroup() {
     let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
-    let data;
 
     //Sends group name to server, receives time log back
     $.ajax({
@@ -222,14 +249,14 @@ function changeGroup() {
         dataType: 'json',
         success: function (response) {
             console.log('data', response);
-            data = response;
+            updateTable(response);
         },
         error: function (response) {
             console.log('data', response);
         }
     });
 
-    updateTable(data);
+    //updateTable(data);
 
     //Makes the submission box visible when it needs to
     let combobox = document.querySelector('#combobox');
