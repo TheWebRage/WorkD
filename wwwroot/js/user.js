@@ -208,6 +208,15 @@ function login() {
 
 }
 
+function comboboxAdd() {
+    group = d3.select('#combobox').node().value;
+    if (group === 'Create New Group') {
+        d3.select('#group-name-div').node().style.display = 'block';
+    } else {
+        d3.select('#group-name-div').node().style.display = 'none';
+    }
+}
+
 function updateComboBox(data) {
 
     if (document.getElementById("combobox")) {
@@ -226,15 +235,7 @@ function updateComboBox(data) {
         .attr('value', 'Create New Group').attr('id', 'create-new-group')
         .html('Create New Group');
 
-    comboBox.on('change',
-        () => {
-            group = d3.select('#combobox').node().value;
-            if (group === 'Create New Group') {
-                d3.select('#group-name-div').node().style.display = 'block';
-            } else {
-                d3.select('#group-name-div').node().style.display = 'none';
-            }
-        });
+    comboBox.on('change', comboboxAdd );
 }
 
 function removeGroup() {
@@ -263,6 +264,7 @@ window.onload = function () {
                 alert(response);
             }
         });
+        comboboxAdd();
 
         d3.select('#is-observer').on('change', removeGroup);
     }
