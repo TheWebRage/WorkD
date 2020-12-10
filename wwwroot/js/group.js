@@ -11,7 +11,7 @@ let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
 ////////    Function to generate the pi chart
 //generatePiChart(data);
 
-let groups = ['group1', 'group2', 'group3'];
+let groups = [];
 
 window.onload = function () {
     $.ajax({
@@ -44,6 +44,14 @@ window.onload = function () {
     });
 
     changeGroup();
+
+    //shows the time entries at the opening of the webpage
+    if (observer === 'null') {
+        document.querySelector('#newEntry').style.display = 'block';
+    }
+    else {
+        document.querySelector('#newEntry').style.display = 'none';
+    }
 };
 
 
@@ -72,10 +80,8 @@ function updateTable(data) {
     }
 
     // Removes the old pi chart if it exists
-    if (typeof (tempPieChart) !== 'undefined' && tempPieChart !== null) {
-        for (let o of tempPieChart.children) {
-            o.remove();
-        }
+    while (tempPieChart.firstChild) {
+        tempPieChart.removeChild(tempPieChart.firstChild);
     }
 
     let userData = {};
@@ -214,6 +220,8 @@ let users = [
 
 updateTable(users);
 
+//Activates when the combobox is changed
+//Requests times from the server, then updates the tables
 function changeGroup() {
     let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
 
@@ -223,7 +231,7 @@ function changeGroup() {
         headers: {
             'XSRF-TOKEN': xsrf,
         },
-        data: d3.select('#combobox').node().value,
+        data: document.querySelector('#combobox').value,
         dataType: 'json',
         success: function (response) {
             console.log('data', response);
@@ -246,31 +254,32 @@ function changeGroup() {
 
 d3.select('#confirmButton').on('click', submitTime);
 
+//Activates when the submit button is clicked
+//Sends the data to the server
 function submitTime() {
-    let startTime = document.querySelector('#startTime').value;
-    let endTime = document.querySelector('#endTime').value;
-    let description = document.querySelector('#description').value;
+    let startTime = document.querySelector('#startTime');
+    let endTime = document.querySelector('#endTime');
+    let description = document.querySelector('#description');
 
-    if (startTime === '') {
+    //Makes sure values are valid
+    if (startTime.value === '') {
         alert("Please enter valid start time");
     }
-    else if (endTime === '') {
+    else if (endTime.value === '') {
         alert("Please enter valid end time");
     }
-    else if (description === '') {
-        alert('Please enter valid description');
-    }
-    else if (description.length < 5) {
+    else if (description.length.value < 5) {
         alert('Please enter a longer description');
     }
+    //All the values were valid
     else
     {
         //the object that will be sent to the server
         let temp = {
             name: username,
-            StartTime: startTime,
-            EndTime: endTime,
-            Description: description
+            StartTime: startTime.value,
+            EndTime: endTime.value,
+            Description: description.value
         }
 
         let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
@@ -289,7 +298,12 @@ function submitTime() {
             error: function (response) {
                 alert('There has been an error: ' + response);
             }
-         });
+        });
+
+        startTime.value = "";
+        endTime.value = "";
+        description.value = "";
+        changeGroup();
     }
 }
 
