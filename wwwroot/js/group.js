@@ -231,7 +231,7 @@ function changeGroup() {
         headers: {
             'XSRF-TOKEN': xsrf,
         },
-        data: document.querySelector('#combobox').value,
+        data: { groupName: document.querySelector('#combobox').value },
         dataType: 'json',
         success: function (response) {
             console.log('data', response);
