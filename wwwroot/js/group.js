@@ -24,14 +24,26 @@ window.onload = function () {
         dataType: 'json',
         success: function (response) {
             groups = response;
-            console.log('data', response)
+            //console.log('data', response)
+
             updateComboBox(groups);
-            changeGroup();
+
+            let box = document.getElementById('combobox');
+
+            //Makes the default group the one the user is in
+            for (let i = 0; i < box.options.length; i++) {
+                if (box.options[i] === group) {
+                    box.selectedIndex = i;
+                    break;
+                }
+            }
         },
         error: function (response) {
             alert(response);
         }
     });
+
+    changeGroup();
 };
 
 
@@ -55,11 +67,10 @@ function updateTable(data) {
     let tempPieChart = document.getElementById('pichart');
 
     //Removes the old table if it exists
-    if (typeof (tempTable) !== 'undefined' && tempTable !== null) {
-        for (let o of tempTable.children) {
-            o.remove();
-        }
+    while (tempTable.firstChild) {
+        tempTable.removeChild(tempTable.firstChild);
     }
+
     // Removes the old pi chart if it exists
     if (typeof (tempPieChart) !== 'undefined' && tempPieChart !== null) {
         for (let o of tempPieChart.children) {
@@ -83,6 +94,12 @@ function updateTable(data) {
     let PiChartData = {};
 
     for (let u of users) {
+        if (u === null || u.user === null) {
+            d3.select('#table')
+                .append('h2')
+                .html('There are currently no time entries for this group');
+            break;
+        }
         let totalTime = 0;
 
         d3.select('#table')
@@ -170,6 +187,9 @@ function updateTable(data) {
             totalSeconds += totalMinutes * 60;
             totalTime += totalSeconds;
         }
+
+        d3.select('#table')
+            .append('br');
 
         PiChartData[u] = totalTime;
     }
