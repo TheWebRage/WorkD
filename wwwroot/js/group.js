@@ -3,16 +3,17 @@ let username = getCookie('username');
 let group = getCookie('group_name');
 let observer = getCookie('is_observing');
 
-console.log(username + ' ' + group + ' ' + observer);
 
 ////////    Format for using the pi chart with a JSON object    //////////////////////
-let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
+//let data = { Bob: 27, Joe: 18, Frank: 14, Henry: 18, Paul: 70 };
 
 ////////    Function to generate the pi chart
 //generatePiChart(data);
 
 let groups = [];
 
+//Runs when the page is fully loaded
+//Fills the combobox and sets it's value to the group the user is in
 window.onload = function () {
     $.ajax({
         type: 'POST',
@@ -54,8 +55,7 @@ window.onload = function () {
     }
 };
 
-
-
+//Uses an array of data to fill the combobox with the group names
 function updateComboBox(data) {
     let comboBox = d3.select('#combo')
         .append('select')
@@ -70,6 +70,8 @@ function updateComboBox(data) {
     comboBox.on('change', changeGroup);
 }
 
+//Using the timelog as the data input
+//Creates a table and then sends relevant data to generatePiChart
 function updateTable(data) {
     let tempTable = document.getElementById('table');
     let tempPieChart = document.getElementById('pichart');
@@ -203,28 +205,13 @@ function updateTable(data) {
     generatePiChart(PiChartData);
 }
 
-let users = [
-    {
-        user: 'Bob',
-        starTime: '2020-12-08T10:00:00',
-        endTime: '2020-12-08T15:00:00',
-        description: 'I worked'
-    },
-    {
-        user: 'Joe',
-        starTime: '2020-12-08T08:00:00',
-        endTime: '2020-12-08T15:00:00',
-        description: 'I worked'
-    }
-]
-
-updateTable(users);
-
 //Activates when the combobox is changed
 //Requests times from the server, then updates the tables
 function changeGroup() {
     let xsrf = $('input:hidden[name="__RequestVerificationToken"]').val();
+    let data;
 
+    //Sends group name to server, receives time log back
     $.ajax({
         type: 'POST',
         url: 'group?handler=TimeEntries',
@@ -235,13 +222,16 @@ function changeGroup() {
         dataType: 'json',
         success: function (response) {
             console.log('data', response);
-            updateTable(response);
+            data = response;
         },
         error: function (response) {
             console.log('data', response);
         }
     });
 
+    updateTable(data);
+
+    //Makes the submission box visible when it needs to
     let combobox = document.querySelector('#combobox');
 
     if ((group === combobox.value) && (observer === 'null')) {
@@ -251,8 +241,6 @@ function changeGroup() {
         document.querySelector('#newEntry').style.display = 'none';
     }
 }
-
-d3.select('#confirmButton').on('click', submitTime);
 
 //Activates when the submit button is clicked
 //Sends the data to the server
@@ -307,7 +295,6 @@ function submitTime() {
     }
 }
 
-
 //Gets the cookie with the given name
 function getCookie(cname) {
     var name = cname + "=";
@@ -323,3 +310,5 @@ function getCookie(cname) {
     }
     return "";
 }
+
+d3.select('#confirmButton').on('click', submitTime);
