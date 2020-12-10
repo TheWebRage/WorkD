@@ -32,17 +32,35 @@ namespace Assignment_2.Pages
         {
             try
             {
+                //gets the gourpID
                 string groupName = Request.Form["groupName"].First();
-
-                List<TimeLog> TimeLogList = new List<TimeLog>();
-
-                for (int i = 0; i < _context.TimeLog.Count(); i++){
-                    if (_context.TimeLog.ToArray()[i].User.Group.Name == groupName)
+                int gourpID = -1;
+                foreach(Group g in _context.Group)
+                {
+                    if(g.Name == groupName)
                     {
-                        TimeLog timeLogEntry = _context.TimeLog.ToArray()[i];
-                        TimeLogList.Add(timeLogEntry);
+                        gourpID = g.ID;
                     }
-                    
+                }
+
+                //uses gourpID to populate list of userIDs
+                List<int> userIds = new List<int>();
+                foreach (User u in _context.User)
+                {
+                    if(u.GroupID == gourpID)
+                    {
+                        userIds.Add(u.ID);
+                    }
+                }
+
+                //uses list of userIds to populate TimeLogList
+                List<TimeLog> TimeLogList = new List<TimeLog>();
+                foreach(TimeLog tl in _context.TimeLog)
+                {
+                    if (userIds.Contains(tl.UserID))
+                    {
+                        TimeLogList.Add(tl);
+                    }
                 }
 
                 return new JsonResult(TimeLogList);
