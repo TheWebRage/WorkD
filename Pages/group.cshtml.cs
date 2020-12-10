@@ -63,6 +63,13 @@ namespace Assignment_2.Pages
                     }
                 }
 
+                //removes password and salt from the json object
+                for(int j = 0; j < TimeLogList.Count(); j++)
+                {
+                    TimeLogList[j].User.PasswordHash = "";
+                    TimeLogList[j].User.Salt = "";
+                }
+
                 return new JsonResult(TimeLogList);
             }
             catch(Exception e)
