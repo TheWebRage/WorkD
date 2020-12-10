@@ -246,16 +246,7 @@ function removeGroup() {
 }
 
 window.onload = function () {
-    if (document.getElementById("loginButton3")) {
-
-        if (getCookie('username') === '') {
-            document.getElementById("loginButton1").style.display = 'block';
-            document.getElementById("loginButton2").style.display = 'block';
-        } else {
-            document.getElementById("playGame").style.display = 'block';
-            document.getElementById("loginButton3").style.display = 'block';
-        }
-    } else {
+    if (document.getElementById("group-name-collector")) {
         $.ajax({
             type: 'POST',
             url: '/group?handler=Groups',
