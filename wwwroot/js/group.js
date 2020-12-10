@@ -185,6 +185,9 @@ function updateTable(data) {
                 totalHours--;
                 totalMinutes += 60;
             }
+            if (totalHours < 0) {
+                totalHours += 24;
+            }
 
             let stringHours, stringMinutes;
 
