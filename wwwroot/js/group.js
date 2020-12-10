@@ -29,16 +29,6 @@ window.onload = function () {
 
             updateComboBox(groups);
             changeGroup();
-
-            let box = document.getElementById('combobox');
-
-            //Makes the default group the one the user is in
-            for (let i = 0; i < box.options.length; i++) {
-                if (box.options[i] === group) {
-                    box.selectedIndex = i;
-                    break;
-                }
-            }
         },
         error: function (response) {
             alert(response);
@@ -66,6 +56,16 @@ function updateComboBox(data) {
         comboBox.append('option')
             .attr('value', g)
             .html(g);
+    }
+
+    let box = document.querySelector('#combobox');
+
+    //Makes the default group the one the user is in
+    for (let i = 0; i < box.options.length; i++) {
+        if (box.options[i].value === group) {
+            box.selectedIndex = i;
+            break;
+        }
     }
 
     //Makes the combobox run changeGroup when changed
@@ -283,7 +283,7 @@ function submitTime() {
     else if (endTime.value === '') {
         alert("Please enter valid end time");
     }
-    else if (description.length.value < 5) {
+    else if (description.value.length < 5) {
         alert('Please enter a longer description');
     }
     //All the values were valid
@@ -309,6 +309,7 @@ function submitTime() {
             dataType: 'json',
             success: function (response) {
                 console.log('data', response);
+                changeGroup();
             },
             error: function (response) {
                 alert('There has been an error: ' + response);
@@ -318,7 +319,6 @@ function submitTime() {
         startTime.value = "";
         endTime.value = "";
         description.value = "";
-        changeGroup();
     }
 }
 
