@@ -26,28 +26,30 @@ namespace Assignment_2.Pages.Users
                 var returnable = new ReturnableUser("", "", "", "", "No users in Database.");
                 return new JsonResult(returnable);
             }
-
-            string username = Request.Form["username"];
-            string passwordHash = Request.Form["passwordHash"];
-
-            User userObj = _context.User.Where(x => x.UserName == username).First();
-            string error = "";
+            string error = string.Empty;
             string is_observing = "";
             string group_name = "";
+            User userObj = new User();
 
-            if (userObj.ID <= 0)
+            try
             {
-                error = "Username not found.";
+                string username = Request.Form["username"];
+                string passwordHash = Request.Form["passwordHash"];
+
+                userObj = _context.User.Where(x => x.UserName == username).First();
+                
             }
-            else if (passwordHash != "" && userObj.PasswordHash != passwordHash)
+            catch(Exception e)
             {
-                error = "Password is incorrect.";
+                error = "Username or password not found";
+                var returnableError = new ReturnableUser(userObj.UserName, userObj.Salt, is_observing, group_name, error);
+                return new JsonResult(returnableError);
             }
-            else
-            {
-                is_observing = userObj.IsObserver;
-                group_name = _context.Group.First(x => x.ID == userObj.GroupID).Name;
-            }
+
+            
+            is_observing = userObj.IsObserver;
+            group_name = _context.Group.First(x => x.ID == userObj.GroupID).Name;
+            
 
             var returnableUser = new ReturnableUser(userObj.UserName, userObj.Salt, is_observing, group_name, error);
             return new JsonResult(returnableUser);
