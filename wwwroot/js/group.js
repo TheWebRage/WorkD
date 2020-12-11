@@ -168,8 +168,8 @@ function updateTable(data) {
             let startSeconds = parseInt(starTime[2]);
 
             let endHours = parseInt(endTime[0]);
-            let endMinutes = parseInt(starTime[1]);
-            let endSeconds = parseInt(starTime[2]);
+            let endMinutes = parseInt(endTime[1]);
+            let endSeconds = parseInt(endTime[2]);
 
             //The actual subtraction
             let totalHours = endHours - startHours;
@@ -193,7 +193,7 @@ function updateTable(data) {
 
             //Adds a 0 before the number if it's a single digit
             if (totalHours < 10) {
-                stringHours = '0' + totalHours;
+                stringHours = '0' + totalHours.toString();
             }
             else {
                 stringHours = totalHours.toString();
@@ -201,7 +201,7 @@ function updateTable(data) {
 
             //adds a 0 before the minutes if it's a single digit
             if (totalMinutes < 10) {
-                stringMinutes = '0' + totalMinutes;
+                stringMinutes = '0' + totalMinutes.toString();
             }
             else {
                 stringMinutes = totalMinutes.toString();
